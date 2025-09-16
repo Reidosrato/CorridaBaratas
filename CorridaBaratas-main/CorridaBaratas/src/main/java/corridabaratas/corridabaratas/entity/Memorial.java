@@ -16,7 +16,7 @@ public class Memorial {
     @Column (name="memorial_causa")
     private String causa;
     @Column (name="memorial_data_morte")
-    private Date data_morte;
+    private Date datamorte;
 
     @JsonIgnore
     @ManyToOne
@@ -39,12 +39,12 @@ public class Memorial {
         this.causa = causa;
     }
 
-    public Date getData_morte() {
-        return data_morte;
+    public Date getDatamorte() {
+        return datamorte;
     }
 
-    public void setData_morte(Date data_morte) {
-        this.data_morte = data_morte;
+    public void setDatamorte(Date datamorte) {
+        this.datamorte = datamorte;
     }
 
     public Barata getBarata() {
