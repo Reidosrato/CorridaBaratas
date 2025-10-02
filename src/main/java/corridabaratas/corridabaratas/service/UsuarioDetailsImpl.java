@@ -21,13 +21,15 @@ public class UsuarioDetailsImpl implements UserDetails {
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
     }
+
     @Override
     public String getPassword() {
-        return usuario.getSenha();
+        return null;
     }
+
     @Override
     public String getUsername() {
-        return usuario.getLogin();
+        return usuario.getNome();
     }
 
     @Override
