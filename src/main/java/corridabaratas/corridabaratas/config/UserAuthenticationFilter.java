@@ -2,7 +2,7 @@ package corridabaratas.corridabaratas.config;
 
 import corridabaratas.corridabaratas.entity.Usuario;
 import corridabaratas.corridabaratas.repository.UsuarioRepository;
-import corridabaratas.corridabaratas.service.JwTokenService;
+import corridabaratas.corridabaratas.service.JwtTokenService;
 import corridabaratas.corridabaratas.service.UsuarioDetailsImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,7 +22,7 @@ import java.util.Arrays;
 @Component
 public class UserAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
-    private JwTokenService jwTokenService; // Service que definimos anteriormente
+    private JwtTokenService jwTokenService; // Service que definimos anteriormente
     @Autowired
     private UsuarioRepository usuarioRepository; // Repository que definimos anteriormente
     @Override
@@ -31,16 +31,22 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
         if (checkIfEndpointIsNotPublic(request)) {
             String token = recoveryToken(request); // Recupera o token do cabeçalho Authorization da requisição
             if (token != null) {
-                String subject = jwTokenService.getSubjectFromToken(token); // Obtém o assunto (neste caso, o nome de usuário) do token
-                Usuario usuario = usuarioRepository.findById(Integer.parseInt(subject)).get(); // Busca o usuário pelo email (que é o assunto do token)
-               UsuarioDetailsImpl userDetails = new UsuarioDetailsImpl(usuario); // Cria um UserDetails com o usuário encontrado
+                    String subject = jwTokenService.getSubjectFromToken(token); // subject is usuario id (string)
+                    Integer usuarioId = null;
+                    try {
+                        usuarioId = Integer.parseInt(subject);
+                    } catch (NumberFormatException ex) {
+                        throw new RuntimeException("Token com subject inválido.");
+                    }
 
-                // Cria um objeto de autenticação do Spring Security
-                Authentication authentication =
-                        new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
+                    Usuario usuario = usuarioRepository.findById(usuarioId)
+                            .orElseThrow(() -> new RuntimeException("Usuário não encontrado pelo id no token."));
 
-                // Define o objeto de autenticação no contexto de segurança do Spring Security
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                    UsuarioDetailsImpl userDetails = new UsuarioDetailsImpl(usuario);
+
+                    // Create authentication object using userDetails' authorities
+                    Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
                 throw new RuntimeException("O token está ausente.");
             }

@@ -23,6 +23,11 @@ public class Historico{
     @JoinColumn(name = "barata_id", nullable = false)
     private Barata barata;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "pista_id", nullable = false)
+    private Pista pista;
+
     public int getId() {
         return id;
     }
@@ -53,5 +58,13 @@ public class Historico{
 
     public void setBarata(Barata barata) {
         this.barata = barata;
+    }
+
+    public Pista getPista() {
+        return pista;
+    }
+
+    public void setPista(Pista pista) {
+        this.pista = pista;
     }
 }

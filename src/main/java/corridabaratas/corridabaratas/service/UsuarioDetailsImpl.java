@@ -24,12 +24,14 @@ public class UsuarioDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
+        // Project does not store passwords in this minimal demo; return null to indicate not used
         return null;
     }
 
     @Override
     public String getUsername() {
-        return usuario.getNome();
+        // Return the usuario id as subject for tokens when requested by the app
+        return usuario.getId() != null ? usuario.getId().toString() : null;
     }
 
     @Override
@@ -50,6 +52,14 @@ public class UsuarioDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Integer getIdUsuario(){
+        return usuario.getId();
+    }
+
+    public String getNomeUsuario(){
+        return usuario.getNome();
     }
 }
 

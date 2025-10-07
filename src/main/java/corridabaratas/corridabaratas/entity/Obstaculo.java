@@ -1,5 +1,6 @@
 package corridabaratas.corridabaratas.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +14,11 @@ public class Obstaculo {
     private String tipo;
     @Column (name = "obstaculo_descricao")
     private String descricao;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "pista_id", nullable = false)
+    private Pista pista;
 
     public int getId() {
         return id;
@@ -36,5 +42,13 @@ public class Obstaculo {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public Pista getPista() {
+        return pista;
+    }
+
+    public void setPista(Pista pista) {
+        this.pista = pista;
     }
 }

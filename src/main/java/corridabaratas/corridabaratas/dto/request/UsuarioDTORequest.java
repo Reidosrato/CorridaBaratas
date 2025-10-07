@@ -3,6 +3,8 @@ package corridabaratas.corridabaratas.dto.request;
 public class UsuarioDTORequest {
     private String nome;
     private String nacionalidade;
+    private String login;
+    private String senha;
 
     public String getNome() {
         return nome;
@@ -18,5 +20,21 @@ public class UsuarioDTORequest {
 
     public void setNacionalidade(String nacionalidade) {
         this.nacionalidade = nacionalidade;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }

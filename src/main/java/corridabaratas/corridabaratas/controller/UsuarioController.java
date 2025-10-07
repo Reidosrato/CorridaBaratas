@@ -4,6 +4,7 @@ import corridabaratas.corridabaratas.entity.Usuario;
 import corridabaratas.corridabaratas.service.UsuarioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,4 +19,14 @@ public class UsuarioController {
     @GetMapping("/listar")
 
     public ResponseEntity<List<Usuario>>listarUsuario(){return ResponseEntity.ok(usuarioService.listarUsuario());}
+
+    @PostMapping("/criar")
+    public ResponseEntity<?> criarUsuario(@org.springframework.web.bind.annotation.RequestBody corridabaratas.corridabaratas.dto.request.UsuarioDTORequest request){
+        return ResponseEntity.ok(usuarioService.criar(request));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@org.springframework.web.bind.annotation.RequestBody corridabaratas.corridabaratas.dto.request.UsuarioDTOLoginRequest request){
+        return ResponseEntity.ok(usuarioService.login(request));
+    }
 }

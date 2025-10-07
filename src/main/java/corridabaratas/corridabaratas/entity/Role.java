@@ -3,7 +3,7 @@ package corridabaratas.corridabaratas.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table
+@Table(name = "role")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +20,5 @@ public class Role {
         this.id = id;
     }
     public RoleName getName() {return name;}
-
-    public void SetName(RoleName name) { this.name = name;}
+    public void setName(RoleName name) { this.name = name;}
 }

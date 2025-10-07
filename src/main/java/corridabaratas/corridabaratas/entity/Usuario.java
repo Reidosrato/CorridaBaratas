@@ -23,6 +23,12 @@ public class Usuario {
     @Column (name = "usuario_nacionalidade")
     private String nacionalidade;
 
+    @Column(name = "usuario_login")
+    private String login;
+
+    @Column(name = "usuario_senha")
+    private String senha;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "usuario_role",
             joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -50,5 +56,21 @@ public class Usuario {
 
     public void setNacionalidade(String nacionalidade) {
         this.nacionalidade = nacionalidade;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }

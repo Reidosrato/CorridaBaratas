@@ -24,6 +24,9 @@ public class SecurityConfiguration {
     public static final String [] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
             "/usuario/login", // Url que usaremos para fazer login
             "/usuario/criar", // Url que usaremos para criar um usuário
+            // controller uses api prefix -> expose these as well
+            "/api/usuario/login",
+            "/api/usuario/criar",
             // 🔓 Swagger/OpenAPI UI
             "/v3/api-docs/**",
             "/swagger-ui/**",
