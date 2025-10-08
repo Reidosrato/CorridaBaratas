@@ -1,10 +1,13 @@
 package corridabaratas.corridabaratas.dto.request;
 
+import java.util.List;
+
 public class UsuarioDTORequest {
     private String nome;
     private String nacionalidade;
     private String login;
     private String senha;
+
 
     public String getNome() {
         return nome;
@@ -37,4 +40,5 @@ public class UsuarioDTORequest {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
 }

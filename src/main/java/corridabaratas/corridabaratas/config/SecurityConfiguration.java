@@ -22,11 +22,9 @@ public class SecurityConfiguration {
     private UserAuthenticationFilter userAuthenticationFilter;
 
     public static final String [] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
-            "/usuario/login", // Url que usaremos para fazer login
-            "/usuario/criar", // Url que usaremos para criar um usuário
-            // controller uses api prefix -> expose these as well
-            "/api/usuario/login",
-            "/api/usuario/criar",
+            "/api/usuario/login", // Url que usaremos para fazer login
+            "/api/usuario/criar", // Url que usaremos para criar um usuário
+            "/api/time/listar",
             // 🔓 Swagger/OpenAPI UI
             "/v3/api-docs/**",
             "/swagger-ui/**",
@@ -34,15 +32,23 @@ public class SecurityConfiguration {
     };
     // Endpoints que requerem autenticação para serem acessados
     public static final String [] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
-            "/usuario/listar"
+            "/api/usuario/listar",
+            "/api/time/{id}",
+            "/api/time",
+            "/api/time/listar",
+            "/api/pista/{id}",
+            "/api/pista",
+            "/api/pista/listar",
+            "/api/time/{id}",
+            "/api/pista",
     };
     // Endpoints que só podem ser acessador por usuários com permissão de cliente
     public static final String [] ENDPOINTS_CUSTOMER = {
-            "/jogo"
+            "/api/jogo"
     };
     // Endpoints que só podem ser acessador por usuários com permissão de administrador
     public static final String [] ENDPOINTS_ADMIN = {
-            "/categoria"
+            "/api/categoria"
     };
 
     @Bean

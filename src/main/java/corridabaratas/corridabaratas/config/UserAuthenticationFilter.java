@@ -27,29 +27,32 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
     private UsuarioRepository usuarioRepository; // Repository que definimos anteriormente
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // Verifica se o endpoint requer autenticação antes de processar a requisição
-        if (checkIfEndpointIsNotPublic(request)) {
-            String token = recoveryToken(request); // Recupera o token do cabeçalho Authorization da requisição
-            if (token != null) {
-                    String subject = jwTokenService.getSubjectFromToken(token); // subject is usuario id (string)
-                    Integer usuarioId = null;
-                    try {
-                        usuarioId = Integer.parseInt(subject);
-                    } catch (NumberFormatException ex) {
-                        throw new RuntimeException("Token com subject inválido.");
-                    }
-
-                    Usuario usuario = usuarioRepository.findById(usuarioId)
-                            .orElseThrow(() -> new RuntimeException("Usuário não encontrado pelo id no token."));
-
-                    UsuarioDetailsImpl userDetails = new UsuarioDetailsImpl(usuario);
-
-                    // Create authentication object using userDetails' authorities
-                    Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-            } else {
-                throw new RuntimeException("O token está ausente.");
+        // Se o endpoint for público, não exige autenticação
+        if (!checkIfEndpointIsNotPublic(request)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        // Se não for público, exige autenticação
+        String token = recoveryToken(request); // Recupera o token do cabeçalho Authorization da requisição
+        if (token != null) {
+            String subject = jwTokenService.getSubjectFromToken(token); // subject is usuario id (string)
+            Integer usuarioId = null;
+            try {
+                usuarioId = Integer.parseInt(subject);
+            } catch (NumberFormatException ex) {
+                throw new RuntimeException("Token com subject inválido.");
             }
+
+            Usuario usuario = usuarioRepository.findById(usuarioId)
+                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado pelo id no token."));
+
+            UsuarioDetailsImpl userDetails = new UsuarioDetailsImpl(usuario);
+
+            // Create authentication object using userDetails' authorities
+            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } else {
+            throw new RuntimeException("O token está ausente.");
         }
         filterChain.doFilter(request, response); // Continua o processamento da requisição
     }

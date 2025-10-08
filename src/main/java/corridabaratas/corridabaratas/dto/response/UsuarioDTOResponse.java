@@ -1,6 +1,7 @@
 package corridabaratas.corridabaratas.dto.response;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class UsuarioDTOResponse {
     private String id;
